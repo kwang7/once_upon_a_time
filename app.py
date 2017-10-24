@@ -9,7 +9,9 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET','POST'])
 def index():
-    return "Hi!"
+    #if username is in session, redirect to homepage
+    #login or sign up options
+    return render_template("login.html")
 
 @app.route('/view', methods=['GET', 'POST'])
 def view():
