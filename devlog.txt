@@ -3,3 +3,6 @@ Add base files to project
 
 yeH -- 2017-10-24 13:22:00
 Add base db_builder and create (currently useless) routes
+
+ionkinaK -- 2017-10-24 13:22:00
+Add add_story() with imported db_builder function 
