@@ -9,3 +9,6 @@ Add add_story() with imported db_builder function
 
 ionkinaK -- 2017-10-24 16:05:00
 Finish add_story(), added see_table(table) 
+
+yeH -- 2017-10-24 16:15:00
+Begin add_edit() and get_story()
