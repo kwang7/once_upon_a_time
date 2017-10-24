@@ -102,6 +102,7 @@ ENV/
 
 #ignore edit files
 *~
+*.swp
 
 # our database
 once_upon_a_time.db
