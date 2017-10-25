@@ -13,6 +13,9 @@ Finish add_story(), added see_table(table)
 wangK -- 2017-10-24 13:22:00
 Began working on root route and login
 
+leeV -- 2017-10-24 13:22:00
+Began working on templates
+
 yeH -- 2017-10-24 16:15:00
 Begin add_edit() and get_story()
 
