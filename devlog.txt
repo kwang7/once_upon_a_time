@@ -29,3 +29,6 @@ Continued working on auth(), login(), and signup()
 
 yeH -- 2017-10-25 13:15:00
 Add fxn to get stories a user has contributed to
+
+ionkinaK -- 2017-10-25 13:16:00
+Add get_last_edit() which returns the content of the latest update
