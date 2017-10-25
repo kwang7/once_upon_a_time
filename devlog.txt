@@ -1,3 +1,8 @@
+Team once upon a time
+Karina Ionkina, Vivien Lee, Kelly Wang, Helen Ye
+SoftDev1 pd7
+P#00 - Da Art of Storytellin'
+
 yeH -- 2017-10-23 9:12:44
 Add base files to project
 
