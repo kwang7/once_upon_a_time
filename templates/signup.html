@@ -8,17 +8,23 @@
 
 {% block content %}
 <body> <center>
-    <font face = "Comic Sans MS" size ='200' color='green' 
-	</font>
-    <form action="/auth" method="POST">
-      Pick a Username:
-      <input type="text" name='username'>
-      <br>
-      Pick a Password:
-      <input type="password" name='password'>
-      <br>
-      <input type= "submit" name="submit" value="Create an account">
-    </form>
-    <br>
+    <!-- <font face = "Comic Sans MS" size ='200' color='green' 	</font> -->
+	  {% with messages = get_flashed_messages() %}
+	  {% for message in messages %}
+	  {{ message }}
+	  {% endfor %}
+	  {% endwith %}
+	  <form method="POST">
+	    Pick a Username:
+	    <input type="text" name='username'>
+	    <br>
+	    Pick a Password:
+	    <input type="password" name='password'>
+	    Confirm Password:
+	    <input type="password" name='password2'>
+	    <br>
+	    <input type= "submit" name="submit" value="Create an account">
+	  </form>
+	  <br>
 </body>
 {% endblock %}

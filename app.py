@@ -1,11 +1,8 @@
-from flask import Flask
-from flask import render_template
-from flask import request
-from flask import redirect
-from flask import url_for
-from flask import session
+from flask import Flask, render_template, request, session, redirect, url_for, flash
+import os
 
 app = Flask(__name__)
+
 
 @app.route("/", methods=['GET','POST'])
 def index():
@@ -21,10 +18,16 @@ def auth():
 
 @app.route('/signup', methods = ["GET", "POST"])
 def signup():
-    if "username" not in session:
+    if "username" not in session:    
         return render_template("signup.html")
-    return redirect(url_for("auth"))
+    if request.args["password"] != request.args["password2"]:
+        flash('Passwords dont match')
+        return render_template("signup.html")
+    else:
+        return redirect(url_for("auth"))
+   
 
+    
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     if "username" in session:
