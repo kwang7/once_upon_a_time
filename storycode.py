@@ -25,13 +25,14 @@ def see_table(table):
         print thing
     db.close()
 
-# see_table("stories")
-# print("\n")
-
-def add_edit(story_id, user_id, timestamp, content):
+print("-----------SEE_TABLE('STORIES') ---------------")
+see_table("stories")
+print("\n")
+def add_edit(story_id, user_id, content):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    formatted_time = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+    formatted_time = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+            
     cmd = "INSERT INTO edits VALUES (" + str(story_id) + "," + str(user_id) + ", '" + \
             formatted_time + "', '" + content + "')"
     c.execute(cmd)
@@ -54,3 +55,21 @@ def get_story(story_id):
 # add_edit(1,3,datetime.datetime.today(),"Edit 3")
 # for row in get_story(1):
 #     print row
+
+def get_last_edit():
+    db = sqlite3.connect(DATABASE)
+    c = db.cursor()
+    query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits)"
+    result = c.execute(query)
+    for i in result:
+        print i
+
+
+
+#add_story(1,"Title")
+add_edit(1,1, "Edit 1")
+add_edit(1,2, "Edit 2")
+add_edit(1,3, "Edit 3")
+get_story(1)
+print("-----------PRINTING LATEST EDIT ---------------")
+get_last_edit()
