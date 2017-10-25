@@ -8,7 +8,7 @@ DATABASE = db_builder.DATABASE
 def add_story(story_id, story_name):
     db = sqlite3.connect(db_builder)
     c = db.cursor()
-    cmd = "INSERT INTO stories(id, name) VALUES ("  + str(story_id) +  ", '" + story_name + "'" + ")"
+    cmd = "INSERT INTO stories(id, title) VALUES ("  + str(story_id) +  ", '" + story_name + "'" + ")"
     c.execute(cmd)
     db.commit()
     db.close()
@@ -41,11 +41,21 @@ def get_story(story_id):
     c = db.cursor()
     query = "SELECT * FROM edits WHERE story_id =" + str(story_id) + " ORDER BY timestamp ASC"
     result = c.execute(query)
-    for row in result:
-        print row
+    if result:
+        return result
+    return []
 
+<<<<<<< Updated upstream
 #add_story(1,"Title")
 add_edit(1,1,datetime.datetime.today(),"Edit 1")
 add_edit(1,2,datetime.datetime.today(),"Edit 2")
 add_edit(1,3,datetime.datetime.today(),"Edit 3")
 get_story(1)
+=======
+# add_story(1,"Title")
+# add_edit(1,1,datetime.datetime.today(),"Edit 1")
+# add_edit(1,2,datetime.datetime.today(),"Edit 2")
+# add_edit(1,3,datetime.datetime.today(),"Edit 3")
+for row in get_story(1):
+    print row
+>>>>>>> Stashed changes
