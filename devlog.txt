@@ -32,3 +32,6 @@ Add fxn to get stories a user has contributed to
 
 ionkinaK -- 2017-10-25 13:16:00
 Add get_last_edit() which returns the content of the latest update
+
+leeV and wangK-- 2017-10-25 13:16:00
+continued working on signup()
