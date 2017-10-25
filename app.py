@@ -10,8 +10,32 @@ app = Flask(__name__)
 @app.route("/", methods=['GET','POST'])
 def index():
     #if username is in session, redirect to homepage
+    if "username" in session:
+        return "hi"
     #login or sign up options
+    return render_template("howdy.html")
+
+@app.route('/auth', methods = ["GET", "POST"])
+def auth():
+    return "auth"
+
+@app.route('/signup', methods = ["GET", "POST"])
+def signup():
+    if "username" not in session:
+        return render_template("signup.html")
+    return redirect(url_for("auth"))
+
+@app.route('/login', methods = ["GET", "POST"])
+def login():
+    if "username" in session:
+        return redirect(url_for("auth"))
     return render_template("login.html")
+
+@app.route('/welcome', methods = ["GET", "POST"])
+def welcome():
+    if "username" in session:
+        return render_template("home.html", username = username)
+    return redirect(url_for("auth"))
 
 @app.route('/view', methods=['GET', 'POST'])
 def view():

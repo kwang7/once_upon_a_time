@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+<head>
+  {% block head %} 
+  <title> Welcome! </title>
+  {% endblock %}
+</head>
+
+{% block content %}
+<body> <center>
+    <font face = "Comic Sans MS" size ='200' color='purple' 
+	</font>
+    <form action="/auth" method="POST">
+      Wutz poppin, {{username}} ?
+    </form>
+    <br>
+</body>
+{% endblock %}
