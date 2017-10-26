@@ -4,6 +4,16 @@ import db_builder
 
 DATABASE = db_builder.DATABASE
 
+def get_user_id(username):
+    db = sqlite3.connect(DATABASE)
+    c = db.cursor()
+    query = 'SELECT id FROM users WHERE username="' + username + '"'
+    result = c.execute(query)
+    if result:
+        return result.fetchone()
+    else:
+        return -1
+
 def get_stories(user_id):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
