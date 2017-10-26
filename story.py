@@ -62,6 +62,8 @@ def get_last_edit():
     query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits)"
     result = c.execute(query)
     return result.fetchone()[0]
+
+
     
 
 #add_story(1,"Title")
