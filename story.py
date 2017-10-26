@@ -23,7 +23,7 @@ def see_table(table):
     cmd = "SELECT * FROM " + table
     ret = c.execute(cmd)
     for thing in ret:
-        print thing
+        print(thing)
     db.close()
 
 print("-----------SEE_TABLE('STORIES') ---------------")
@@ -64,7 +64,7 @@ def get_last_edit():
     return result.fetchone()[0]
 
 
-    
+
 
 #add_story(1,"Title")
 add_edit(1,1, "Edit 1")

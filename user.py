@@ -42,25 +42,25 @@ def edited(story_id, user_id):
         return True
     else:
         return False
-    
+
 def all_unedited(user_id):
     '''
-    Returns a list of all unedited story ids 
+    Returns a list of all unedited story ids
     '''
     query = "SELECT Count(*) FROM stories"
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     number = c.execute(query).fetchone()[0]
-    print number
+    print(number)
     unedited_ids = []
     for i in range(1, number + 1):
         if not edited(i, user_id):
             unedited_ids.append(i)
     return unedited_ids
-        
 
 
-print all_unedited(1)
+
+print(all_unedited(1))
 
 
-print edited(1, 3)
+print(edited(1, 3))

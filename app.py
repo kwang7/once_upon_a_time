@@ -16,7 +16,7 @@ app.secret_key = os.urandom(32)
 def index():
     #if username is in session, redirect to homepage
     if "username" in session:
-        return "hi"
+        return "You are already logged in, " + session["username"]
     #login or sign up options
     return render_template("howdy.html")
 
@@ -36,7 +36,7 @@ def signauth():
     c.execute("INSERT INTO userInfo VALUES (?,?)", (request.form["username"], request.form["password"]))
     session["username"] = request.form["username"]
     return redirect(url_for("auth"))
-    
+
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     if "username" in session:
@@ -45,17 +45,21 @@ def login():
 
 @app.route('/auth', methods = ["GET", "POST"])
 def auth():
-    if 'username' in session:
+    if "username" in session:
         return redirect(url_for("welcome"))
     else:
-        q = "SELECT password FROM userInfo WHERE username = " + session["username"]
-        foo = c.execute(q)
-        print foo
-        
+
+        # q = "SELECT password FROM userInfo WHERE username = \"" + session["username"] + "\" AND password = \"" + session["password"]
+        # #WHERE username = " + session["username"]
+        # foo = c.execute(q)
+        # print(foo)
+        flash("not authenticated")
+        return redirect(url_for("index"))
+
 @app.route('/welcome', methods = ["GET", "POST"])
 def welcome():
     if "username" in session:
-        return render_template("home.html", username = username)
+        return render_template("home.html", username = session["username"])
     return redirect(url_for("auth"))
 
 @app.route('/view', methods=['GET', 'POST'])
@@ -119,10 +123,10 @@ def edit():
 
 
 
-    
+
 if __name__ == "__main__":
     app.debug = False
     app.run()
-    
+
 db.commit()
 db.close()
