@@ -46,3 +46,6 @@ Add all_unedited and edited fxns
 
 leeV and wangK-- 2017-10-26 13:16:00
 continued working on signup() and auth()
+
+leeV-- 2017-10-26 14:51:00
+continued working on signup() and auth()
