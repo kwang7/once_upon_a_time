@@ -5,13 +5,14 @@ import datetime #used for timestamp
 db_builder.create_tables()
 DATABASE = db_builder.DATABASE
 
-def add_story(story_id, story_name):
+def add_story(story_title):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    cmd = "INSERT INTO stories(id, title) VALUES ("  + str(story_id) +  ", '" + story_name + "'" + ")"
-    c.execute(cmd)
+    cmd = "INSERT INTO stories VALUES (NULL, '" + story_title + "'" + ")"
+    story_id = c.lastrowid
     db.commit()
     db.close()
+    return story_id
 
 #add_story(1, "One day...")
 #add_story(2, "Anotha day...")
@@ -32,7 +33,6 @@ def add_edit(story_id, user_id, content):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     formatted_time = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
-            
     cmd = "INSERT INTO edits VALUES (" + str(story_id) + "," + str(user_id) + ", '" + \
             formatted_time + "', '" + content + "')"
     c.execute(cmd)
@@ -63,8 +63,6 @@ def get_last_edit():
     result = c.execute(query)
     for i in result:
         print i
-
-
 
 #add_story(1,"Title")
 add_edit(1,1, "Edit 1")

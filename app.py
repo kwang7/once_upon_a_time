@@ -3,7 +3,6 @@ import os
 
 app = Flask(__name__)
 
-
 @app.route("/", methods=['GET','POST'])
 def index():
     #if username is in session, redirect to homepage
@@ -18,16 +17,14 @@ def auth():
 
 @app.route('/signup', methods = ["GET", "POST"])
 def signup():
-    if "username" not in session:    
+    if "username" not in session:
         return render_template("signup.html")
     if request.args["password"] != request.args["password2"]:
         flash('Passwords dont match')
         return render_template("signup.html")
     else:
         return redirect(url_for("auth"))
-   
 
-    
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     if "username" in session:
