@@ -1,9 +1,16 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
+import sqlite3
 import story
 import user
 import os
 
+f = "user.db"
+db = sqlite3.connect(f)
+c = db.cursor();
+c.execute("CREATE TABLE IF NOT EXISTS userInfo ( username TEXT , password TEXT )")
+
 app = Flask(__name__)
+app.secret_key = os.urandom(32)
 
 @app.route("/", methods=['GET','POST'])
 def index():
@@ -13,26 +20,38 @@ def index():
     #login or sign up options
     return render_template("howdy.html")
 
-@app.route('/auth', methods = ["GET", "POST"])
-def auth():
-    return "auth"
-
 @app.route('/signup', methods = ["GET", "POST"])
 def signup():
     if "username" not in session:
         return render_template("signup.html")
-    if request.args["password"] != request.args["password2"]:
-        flash('Passwords dont match')
-        return render_template("signup.html")
     else:
         return redirect(url_for("auth"))
 
+@app.route('/signauth', methods = ["GET", "POST"])
+def signauth():
+    #print request.form
+    if request.form["password"] != request.form["password2"]:
+        flash("Passwords don't match")
+        return render_template("signup.html")
+    c.execute("INSERT INTO userInfo VALUES (?,?)", (request.form["username"], request.form["password"]))
+    session["username"] = request.form["username"]
+    return redirect(url_for("auth"))
+    
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     if "username" in session:
         return redirect(url_for("auth"))
     return render_template("login.html")
 
+@app.route('/auth', methods = ["GET", "POST"])
+def auth():
+    if 'username' in session:
+        return redirect(url_for("welcome"))
+    else:
+        q = "SELECT password FROM userInfo WHERE username = " + session["username"]
+        foo = c.execute(q)
+        print foo
+        
 @app.route('/welcome', methods = ["GET", "POST"])
 def welcome():
     if "username" in session:
@@ -98,6 +117,12 @@ def edit():
     else:
         return redirect(url_for('index'))
 
+
+
+    
 if __name__ == "__main__":
-    app.debug = True
+    app.debug = False
     app.run()
+    
+db.commit()
+db.close()
