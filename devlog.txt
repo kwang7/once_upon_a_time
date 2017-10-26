@@ -43,3 +43,6 @@ Add UNTESTED (until login implementation) basic create, view, and edit fxns in a
 ionkinaK AND yeH -- 2017-10-25 13:15:00
 Add all_unedited and edited fxns 
 
+
+leeV and wangK-- 2017-10-26 13:16:00
+continued working on signup() and auth()
