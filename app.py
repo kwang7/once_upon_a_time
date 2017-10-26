@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
+import story
+import user
 import os
 
 app = Flask(__name__)
@@ -44,7 +46,7 @@ def view():
         return redirect(url_for('login'))
     # TODO - INCOMPLETE
     story_id = request.args['story']
-    get_story(story_id)
+    story.get_story(story_id)
     return "This is a deep story."
 
 # TODO - TEST ONCE LOGIN SYSTEM IS UP & RUNNING
@@ -62,11 +64,11 @@ def create():
             return redirect(url_for('create'))
         username = session['username']
 
-        story_id = add_story(title)
+        story_id = story.add_story(title)
 
         # What if the user_id returns -1
         user_id = user.get_user_id(username)
-        add_edit(story_id, user_id, content)
+        story.add_edit(story_id, user_id, content)
         return redirect(url_for('view'), story=story_id)
     return "Here you would create a story..."
 

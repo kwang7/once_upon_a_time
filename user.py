@@ -1,4 +1,4 @@
-import storycode
+import story
 import sqlite3
 import db_builder
 
