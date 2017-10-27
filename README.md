@@ -1,7 +1,5 @@
 # Project 0: Da Art of Storytellin' by Team once upon a time
 
-/play trombone►
-
 ## Instructions to Run
 
 This project runs on Python 2.7.
