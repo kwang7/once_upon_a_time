@@ -57,13 +57,29 @@ def get_story(story_id):
 #     print row
 
 def get_last_edit():
+    '''
+    Last update in the table
+    '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits)"
     result = c.execute(query)
     return result.fetchone()[0]
 
+def latest_story_edit(story_id):
+    '''
+    Returns the content of the latest update for a specific story
+    '''
+    db = sqlite3.connect(DATABASE)
+    c = db.cursor()
+    query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits WHERE story_id = " + str(story_id) + ")"
+    result = c.execute(query)
+    return result.fetchone()[0]
 
+
+
+
+ 
 
 
 #add_story(1,"Title")
@@ -73,3 +89,6 @@ add_edit(1,3, "Edit 3")
 get_story(1)
 print("-----------PRINTING LATEST EDIT ---------------")
 get_last_edit()
+
+print("-----------PRINTING LATEST EDIT OF STORY_ID = 1 ---------------")
+print latest_story_edit(1)

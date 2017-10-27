@@ -49,3 +49,6 @@ continued working on signup() and auth()
 
 leeV-- 2017-10-26 14:51:00
 continued working on signup() and auth()
+
+ionkinaK AND yeH -- 2017-10-25 10:57:00
+Add latest_story_edit(story_id) 
