@@ -7,11 +7,15 @@ import os
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
+f = "once_upon_a_time.db"
+db = sqlite3.connect(f, check_same_thread=False)
+c = db.cursor()
+
 @app.route("/", methods=['GET','POST'])
 def index():
-    #if username is in session, redirect to homepage
+    #if username is in session, redirect to homepage if "username" in session:
     if "username" in session:
-        return "You are already logged in, " + session["username"]
+        return redirect(url_for("auth"))
     #login or sign up options
     return render_template("howdy.html")
 
@@ -28,7 +32,7 @@ def signauth():
     if request.form["password"] != request.form["password2"]:
         flash("Passwords don't match")
         return render_template("signup.html")
-    c.execute("INSERT INTO userInfo VALUES (?,?)", (request.form["username"], request.form["password"]))
+    c.execute("INSERT INTO users VALUES (?,?)", (request.form["username"], request.form["password"]))
     session["username"] = request.form["username"]
     return redirect(url_for("auth"))
 
@@ -117,7 +121,7 @@ def edit():
         return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    app.debug = False
+    app.debug = True
     app.run()
 
 db.commit()
