@@ -4,11 +4,6 @@ import story
 import user
 import os
 
-f = "user.db"
-db = sqlite3.connect(f)
-c = db.cursor();
-c.execute("CREATE TABLE IF NOT EXISTS userInfo ( username TEXT , password TEXT )")
-
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
@@ -120,9 +115,6 @@ def edit():
         # storycode.add_edit(
     else:
         return redirect(url_for('index'))
-
-
-
 
 if __name__ == "__main__":
     app.debug = False
