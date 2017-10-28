@@ -126,6 +126,15 @@ def edit():
     else:
         return redirect(url_for('index'))
 
+
+@app.route('/story_content', methods=['GET', 'POST'])
+def story_content():
+    #either edit or view
+    story_id = request.args.get('id', '')
+    return story_id
+
+
+
 if __name__ == "__main__":
     app.debug = True
     app.run()

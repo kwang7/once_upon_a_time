@@ -114,11 +114,11 @@ def titles():
     '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    query = "SELECT title FROM stories"
+    query = "SELECT title, id FROM stories"
     result = c.execute(query).fetchall()
     titles = []
     for t in result:
-        titles.append(t[0])
+        titles.append(t)
     return titles
 
 #------------------------------- HARDCODED STORY TITLES -------------------------------                                               

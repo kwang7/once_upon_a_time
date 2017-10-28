@@ -55,3 +55,11 @@ Add latest_story_edit(story_id)
 
 ionkinaK  -- 2017-10-28 12:42:00
 add new_story(title), add_story(id, title), home.html displays story titles 
+
+ionkinaK  -- 2017-10-28 13:58:00
+html displays "view or edit button." On click, the button generates a url, and passes
+the story id to story_content() in app.py.
+Important note: passing values from HTML to 
+routes via urls is feasible with request.args.get('key','') when the url is: "/route?key=value"
+
+ 

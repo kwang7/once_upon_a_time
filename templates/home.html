@@ -7,7 +7,11 @@
 </head>
 
 {% block content %}
-<body> <center>
+<body>
+
+
+
+ <center>
     <font face = "Comic Sans MS" size ='200' color='purple' 
 	</font>
 
@@ -20,9 +24,16 @@
 
 {% for item in story_titles %}
 
-{{item}} <hr>
+{{item[0]}} 
+<br>
+
+<a href="/story_content?id={{item[1]}}"> view or edit </a>
+
+</form>
+ <hr>
 
 {% endfor %}
+
 
 
 
