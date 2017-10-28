@@ -11,12 +11,6 @@ f = "once_upon_a_time.db"
 db = sqlite3.connect(f, check_same_thread=False)
 c = db.cursor()
 
-#------------------------------- HARDCODED STORY TITLES -------------------------------
-story.new_story("The Story of Once Upon A Time")                                                                                       
-story.new_story("Badum")                                                                                                              
-story.new_story("8 Million Stories")  
-#----------------------------------------------------------------------------------------
-
 @app.route("/", methods=['GET','POST'])
 def index():
     #if username is in session, redirect to homepage if "username" in session:

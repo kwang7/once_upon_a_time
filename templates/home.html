@@ -10,9 +10,21 @@
 <body> <center>
     <font face = "Comic Sans MS" size ='200' color='purple' 
 	</font>
-    <form action="/auth" method="POST">
+
       Wutz poppin, {{username}} ?
-    </form>
+
     <br>
+
+<h1> STORIES </h1>
+<hr>
+
+{% for item in story_titles %}
+
+{{item}} <hr>
+
+{% endfor %}
+
+
+
 </body>
 {% endblock %}
