@@ -90,7 +90,7 @@ def get_story_content(story_id):
     content = ""
 
     for foo in result:
-        content += foo[0]
+        content += " " + foo[0]
 
     return content
 
