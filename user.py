@@ -32,8 +32,8 @@ def get_user_id(username):
     '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    query = 'SELECT id FROM users WHERE username="' + username + '"'
-    result = c.execute(query)
+    query = 'SELECT id FROM users WHERE username= ?'
+    result = c.execute(query, (username,))
     if result:
         return result.fetchone()
     else:
@@ -46,8 +46,8 @@ def get_stories(user_id):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = "SELECT DISTINCT stories.id, title FROM stories, edits \
-            WHERE edits.story_id = stories.id AND edits.user_id=" + str(user_id)
-    stories = c.execute(query)
+            WHERE edits.story_id = stories.id AND edits.user_id = ?"
+    stories = c.execute(query, (user_id,))
     return stories.fetch()
     db.close()
 
@@ -57,8 +57,8 @@ def edited(story_id, user_id):
     '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    query = "SELECT story_id FROM edits WHERE user_id = " + str(user_id) + " AND story_id = " + str(story_id)
-    result = c.execute(query)
+    query = "SELECT story_id FROM edits WHERE user_id = ? AND story_id = ?"
+    result = c.execute(query, (user_id, story_id))
     if result:
         return True
     else:

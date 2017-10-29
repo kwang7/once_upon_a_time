@@ -4,45 +4,22 @@ import datetime #used for timestamp
 
 DATABASE = db_builder.DATABASE
 
-def new_story(title):
-    '''
-    Determines story_id and calls helper function to add it to the table
-    Does not allow story titles that already exist
-    '''
-
-    db = sqlite3.connect(DATABASE)
-    c = db.cursor()
-    check = "SELECT * FROM stories WHERE title='" + title + "'"
-#    print "-------------- PRINTING CHECK --------------"
-#    print check
-    exists = c.execute(check).fetchall() #checking to see if this story exists already...
-    # print "-------------- EXISTS for " + title + "--------------"
-    # print (exists)
-    if exists == []:
-        query = "SELECT MAX(id) FROM stories"
-        max_story_id = c.execute(query).fetchone()[0]
-        if max_story_id == None:
-            story_id = 1
-        else:
-            story_id = max_story_id + 1
-        return add_story(story_id, str(title)) 
-    else: 
-        return "select another title"
-
-    # print "STORY_ID....." + str(story_id)
-
-def add_story(id, title):
+def add_story(title):
     '''
     add story to the table
     '''
+    added = False
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    query = "INSERT INTO stories VALUES ('" + str(id) + "', '" + title + "')"
-#    print "----------PRINTING QUERY -------"
-#    print query
-    c.execute(query)
+    check = "SELECT * FROM stories WHERE title= ?"
+    exists = c.execute(check,(title,)).fetchall() #checking to see if this story exists already...
+    if exists == []:
+        query = "INSERT INTO stories VALUES (NULL,?)"
+        c.execute(query,(title))
+        added = True
     db.commit()
     db.close()
+    return added
 
 def see_table(table):
     db = sqlite3.connect(DATABASE)
@@ -57,17 +34,16 @@ def add_edit(story_id, user_id, content):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     formatted_time = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
-    cmd = "INSERT INTO edits VALUES (" + str(story_id) + "," + str(user_id) + ", '" + \
-            formatted_time + "', '" + content + "')"
-    c.execute(cmd)
+    cmd = "INSERT INTO edits VALUES (?,?,?,?)"
+    c.execute(cmd, (story_id, user_id, formatted_time, content))
     db.commit()
     db.close()
 
 def get_story(story_id):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    query = "SELECT * FROM edits WHERE story_id =" + str(story_id) + " ORDER BY timestamp ASC"
-    story = c.execute(query)
+    query = "SELECT * FROM edits WHERE story_id = ? ORDER BY timestamp ASC"
+    story = c.execute(query, (story_id))
     db.close()
     if story:
         return story
@@ -96,8 +72,8 @@ def latest_story_edit(story_id):
     '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits WHERE story_id = " + str(story_id) + ")"
-    result = c.execute(query)
+    query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits WHERE story_id = ? )"
+    result = c.execute(query, (story_id,))
     return result.fetchone()[0]
 
 
@@ -116,15 +92,15 @@ def titles():
 
 #------------------------------- HARDCODED STORY TITLES
 if __name__ == "__main__":
-    new_story("The Story of Once Upon A Time")
-    new_story("Badum")
-    new_story("8 Million Stories")
+    add_story("The Story of Once Upon A Time")
+    add_story("Badum")
+    add_story("8 Million Stories")
 
     '''
     print ("-----------ADDING STORIES------------------")
-    new_story("The Story of Once Upon A Time") 
-    new_story("Badum")
-    new_story("8 Million Stories")
+    add_story("The Story of Once Upon A Time") 
+    add_story("Badum")
+    add_story("8 Million Stories")
     see_table("stories")
 
 

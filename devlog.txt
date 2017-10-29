@@ -70,3 +70,7 @@ Fix templates
 yeH -- 2017-10-29 12:55:00
 Render flashes in base.html
 Optimize login system
+
+yeH -- 2017-10-29 1:05:00
+Combine add_story and new_story
+Use qmark substitutions in all Cursor execute()

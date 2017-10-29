@@ -12,9 +12,9 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
 #------------------------------- HARDCODED STORY TITLES -------------------------------
-story.new_story("The Story of Once Upon A Time")
-story.new_story("Badum")
-story.new_story("8 Million Stories")
+story.add_story("The Story of Once Upon A Time")
+story.add_story("Badum")
+story.add_story("8 Million Stories")
 #--------------------------------------------------------------------------------------
 
 @app.route("/", methods=['GET','POST'])
