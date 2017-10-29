@@ -1,41 +1,27 @@
 {% extends "base.html" %}
 
-<head>
-  {% block title %} 
-  Welcome! 
-  {% endblock %}
-</head>
+{% block title %} 
+Welcome! 
+{% endblock %}
 
 {% block content %}
-<body>
+<center>
+    <font face = "Comic Sans MS" size ="200" color="purple"></font>
+    Wutz poppin, {{username}} ?
+    <br>
+    <h1> STORIES </h1>
+    <hr>
 
+    {% for item in story_titles %}
 
-
- <center>
-    <font face = "Comic Sans MS" size ='200' color='purple' 
-	</font>
-
-      Wutz poppin, {{username}} ?
-
+    {{item[0]}} 
     <br>
 
-<h1> STORIES </h1>
-<hr>
+    <a href="/story_content?id={{item[1]}}"> view or edit </a>
 
-{% for item in story_titles %}
+    </form>
+    <hr>
 
-{{item[0]}} 
-<br>
-
-<a href="/story_content?id={{item[1]}}"> view or edit </a>
-
-</form>
- <hr>
-
-{% endfor %}
-
-
-
-
-</body>
+    {% endfor %}
+</center
 {% endblock %}
