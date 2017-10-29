@@ -4,6 +4,8 @@ import story
 import user
 import os
 
+DATABASE = "once_upon_a_time.db"
+
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
@@ -136,7 +138,7 @@ def story_content():
     else: 
         db = sqlite3.connect(DATABASE)
         c = db.cursor()
-        check = "SELECT * FROM edits, WHERE story_id='" + story_id + "' AND user_id = "+ get_user_id(session['username'])
+        check = "SELECT * FROM edits, WHERE story_id='" + story_id + "' AND user_id = "+ user.get_user_id(session['username'])
         print check
         exists = c.execute(check).fetchall() #checking to see if this story exists already...     
         if exists != []:
