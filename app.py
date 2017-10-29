@@ -76,7 +76,7 @@ def auth():
     except KeyError:
         flash("Please fill out all fields")
         return render_template("login.html")
-    if user.auth_user(username, password):
+    if user.auth_user(username,password):
         session['username'] = username
         flash("Successfully logged in")
         return redirect(url_for('welcome'))
@@ -98,8 +98,7 @@ def welcome():
     if "username" in session:
         username = session["username"]
         return render_template("home.html", username = session["username"], \
-                stories=user.get_stories(user.get_user_id(username)), \
-                unedited_stories=user.all_unedited(user.get_user_id(username)))
+                stories=user.get_stories(user.get_user_id(username)))
     return redirect(url_for("auth"))
 
 @app.route('/view', methods=['GET', 'POST'])
@@ -110,10 +109,7 @@ def view():
     # TODO - INCOMPLETE
     story_id = request.args['story']
     story.get_story(story_id)
-    content = story.get_story_content(story_id)
-    print(content)
-    return render_template('storypage.html',
-                            content=story.get_story_content(story_id))
+    return "This is a deep story."
 
 # TODO - TEST ONCE LOGIN SYSTEM IS UP & RUNNING
 @app.route('/create', methods=['GET', 'POST'])
@@ -129,7 +125,6 @@ def create():
             flash('You have not filled out all the required fields')
             return redirect(url_for('create'))
         username = session['username']
-
         story_id = story.add_story(title)
 
         # What if the user_id returns -1
@@ -162,11 +157,10 @@ def edit():
         print ("*****")
         try:
             content = request.form['content']
-            story.add_edit(story_id, user_id, content)
         except KeyError:
             flash('You have not filled out all the required fields')
             return redirect(url_for('edit'), story=story_id)
-
+        story.add_edit(story_id, user_id, content)
         flash("Edited story")
         return redirect(url_for('welcome'))
     else:
