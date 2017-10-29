@@ -110,6 +110,7 @@ def view():
     story.get_story(story_id)
     content = story.get_story_content(story_id)
     return render_template('storypage.html',
+                            story_title=story.get_title(story_id),
                             content=story.get_story_content(story_id))
 
 
@@ -126,14 +127,20 @@ def create():
         except KeyError:
             flash('You have not filled out all the required fields')
             return redirect(url_for('create'))
+
         username = session['username']
-        story_id = story.add_story(title)
+        story.add_story(title)
+
+        db = sqlite3.connect(DATABASE)
+        c = db.cursor()
+        added = c.execute("SELECT MAX(id) FROM stories")
+        story_id = added.fetchone()[0]
 
         # What if the user_id returns -1
         user_id = user.get_user_id(username)
         story.add_edit(story_id, user_id, content)
         flash("Story successfully created")
-        return redirect(url_for('view'), story=story_id)
+        return redirect(url_for('view', story=story_id))
     return render_template("create.html")
 
 @app.route('/stories', methods=['GET', 'POST'])
