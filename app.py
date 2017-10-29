@@ -133,7 +133,7 @@ def create():
         user_id = user.get_user_id(username)
         story.add_edit(story_id, user_id, content)
         flash("Story successfully created")
-        return redirect(url_for('view'), story=story_id)
+        return redirect(url_for('view', story=story_id))
     return render_template("create.html")
 
 @app.route('/stories', methods=['GET', 'POST'])
