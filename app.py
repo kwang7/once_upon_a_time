@@ -108,13 +108,10 @@ def view():
         return redirect(url_for('login'))
     story_id = request.args['story']
     story.get_story(story_id)
-<<<<<<< HEAD
     content = story.get_story_content(story_id)
     return render_template('storypage.html',
                             content=story.get_story_content(story_id))
-=======
-    return "This is a deep story."
->>>>>>> e2f7801b80191e3fec1c1aa583501ca5f0fe5a14
+
 
 # TODO - TEST ONCE LOGIN SYSTEM IS UP & RUNNING
 @app.route('/create', methods=['GET', 'POST'])
