@@ -64,6 +64,9 @@ routes via urls is feasible with request.args.get('key','') when the url is: "/r
 ionkinaK  -- 2017-10-28 20:07:00
 Finish story_content(): redirects to edit() if user has not edited yet, redirects to view otherwise. Added story_id parameters to edit() and view(). Paramaters are passed through url_for in story_content() Note: Users must have id in the users table for fxns to work
 
+wangL -- 2017-10-29 00:00:00
+Finished login() and signup(), optimized redirects
+
 yeH -- 2017-10-29 11:08:00
 Fix templates
 
