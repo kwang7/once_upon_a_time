@@ -108,11 +108,12 @@ def view():
         return redirect(url_for('login'))
     story_id = request.args['story']
     story.get_story(story_id)
-    content = story.get_story_content(story_id)
-    return render_template('storypage.html',
-                            story_title=story.get_title(story_id),
-                            content=story.get_story_content(story_id))
-
+    #print story_id
+    if user.edited(story_id, user.get_user_id(session['username'])):
+        content = story.get_story_content(story_id)
+    else:
+        content = story.latest_story_edit(story_id)
+    return render_template('storypage.html', story_title=story.get_title(story_id), content=content)
 
 # TODO - TEST ONCE LOGIN SYSTEM IS UP & RUNNING
 @app.route('/create', methods=['GET', 'POST'])
