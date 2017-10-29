@@ -62,13 +62,13 @@ def auth():
         return redirect(url_for("index"))
 
 @app.route('/welcome', methods = ["GET", "POST"])
-def welcome():
+def welcome(story_id):
     if "username" in session:
         return render_template("home.html", username = session["username"], story_titles=story.titles())
     return redirect(url_for("auth"))
 
 @app.route('/view', methods=['GET', 'POST'])
-def view():
+def view(story_id):
     if "username" not in session:
         flash('You must be logged in to view stories!')
         return redirect(url_for('login'))
@@ -129,10 +129,20 @@ def edit():
 
 @app.route('/story_content', methods=['GET', 'POST'])
 def story_content():
-    #either edit or view
     story_id = request.args.get('id', '')
-    return story_id
-
+    if "username" not in session:
+        flash('You must be logged in to edit!')
+        return redirect(url_for('login'))
+    else: 
+        db = sqlite3.connect(DATABASE)
+        c = db.cursor()
+        check = "SELECT * FROM edits, WHERE story_id='" + story_id + "' AND user_id = "+ get_user_id(session['username'])
+        print check
+        exists = c.execute(check).fetchall() #checking to see if this story exists already...     
+        if exists != []:
+            return redirect(url_for('view'), story_id = story_id)
+        else:
+            return redirect(url_for('edit'), story_id = story_id)
 
 
 if __name__ == "__main__":
