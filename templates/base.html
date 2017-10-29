@@ -15,5 +15,9 @@
         </ul>
         {% block content %}
         {% endblock %}
+
+        {% if logged_in %}
+        <a href="/logout">Logout</a>
+        {% endif %}
     </body>
 </html>
