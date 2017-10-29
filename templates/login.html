@@ -1,29 +1,26 @@
 {% extends "base.html" %}
 
-<head>
-  {% block title %} 
-  LOGIN
-  {% endblock %}
-</head>
+{% block title %} 
+LOGIN
+{% endblock %}
 
 {% block content %}
-<body> <center>
-    <font face = "Comic Sans MS" size ='200' color='cyan' 
-	  </font>
-{% with messages = get_flashed_messages() %}
-	  {% for message in messages %}
-	  {{ message }}
-	  {% endfor %}
-	  {% endwith %}
+<center>
+    <font face = "Comic Sans MS" size ='200' color='cyan'>
+    </font>
+    {% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+    {% endwith %}
     <form action="/auth" method="POST">
-      Username:
-      <input type="text" name='username'>
-      <br>
-      Password:
-      <input type="password" name='password'>
-      <br>
-      <input type= "submit" name="submit" value="Login">
+        Username:
+        <input type="text" name='username'>
+        <br>
+        Password:
+        <input type="password" name='password'>
+        <br>
+        <input type= "submit" name="submit" value="Login">
     </form>
-    <br>
-</body>
+</center>
 {% endblock %}

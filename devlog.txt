@@ -43,7 +43,6 @@ Add UNTESTED (until login implementation) basic create, view, and edit fxns in a
 ionkinaK AND yeH -- 2017-10-26 13:15:00
 Add all_unedited and edited fxns 
 
-
 leeV and wangK-- 2017-10-26 13:16:00
 continued working on signup() and auth()
 
@@ -65,3 +64,5 @@ routes via urls is feasible with request.args.get('key','') when the url is: "/r
 ionkinaK  -- 2017-10-28 20:07:00
 Finish story_content(): redirects to edit() if user has not edited yet, redirects to view otherwise. Added story_id parameters to edit() and view(). Paramaters are passed through url_for in story_content() Note: Users must have id in the users table for fxns to work
 
+yeH -- 2017-10-29 11:08:00
+Fix templates
