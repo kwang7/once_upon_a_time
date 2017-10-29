@@ -83,3 +83,6 @@ Modify home page, add stories page and edit page
 
 leeV-- 2017-10-29 17:46:00
 fixed signup(), created remaining needed templates/pages, implemented new story creation
+
+wangK -- 2017-10-29 17:40:00
+made a bunch of small fixes
