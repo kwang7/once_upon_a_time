@@ -5,23 +5,24 @@
         <title> {% block title %} {% endblock %} | Once Upon A Time</title>
         {% endblock %}
     </head>
-
+    <font face = "Verdana" color='orange'>
     <body>
-        <div align="center">
-            <ul style="list-style-type:none">
-                {% set messages = get_flashed_messages() %}
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% block content %}
-        {% endblock %}
-
-        <div align="center">
-            {% if logged_in %}
-            <a href="/logout">Logout</a>
-            {% endif %}
-        </div>
+      
+      <div align="center">
+        <ul style="list-style-type:none">
+          {% set messages = get_flashed_messages() %}
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% block content %}
+      {% endblock %}
+      <div align="center">
+        {% if logged_in %}
+        <a href="/logout">Logout</a>
+        {% endif %}
+      </div>
     </body>
+    </font>
 </html>
