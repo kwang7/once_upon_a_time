@@ -80,3 +80,6 @@ Use qmark substitutions in all Cursor execute()
 
 yeH -- 2017-10-29 14:45:00
 Modify home page, add stories page and edit page
+
+leeV-- 2017-10-29 17:46:00
+fixed signup(), created remaining needed templates/pages, implemented new story creation
