@@ -107,11 +107,9 @@ def view():
     if "username" not in session:
         flash('You must be logged in to view stories!')
         return redirect(url_for('login'))
-    # TODO - INCOMPLETE
     story_id = request.args['story']
     story.get_story(story_id)
     content = story.get_story_content(story_id)
-    print(content)
     return render_template('storypage.html',
                             content=story.get_story_content(story_id))
 
@@ -135,8 +133,9 @@ def create():
         # What if the user_id returns -1
         user_id = user.get_user_id(username)
         story.add_edit(story_id, user_id, content)
+        flash("Story successfully created")
         return redirect(url_for('view'), story=story_id)
-    return "Here you would create a story..."
+    return render_template("create.html")
 
 @app.route('/stories', methods=['GET', 'POST'])
 def stories():

@@ -22,9 +22,10 @@ def auth_user(username, password):
     c = db.cursor()
     query = 'SELECT password FROM users WHERE username = ? AND password = ?'
     user = c.execute(query,(username,password))
-    if user:
-        return True
-    return False
+    try:
+        user.fetchOne()[0]
+    except AttributeError:
+        return False
 
 def get_user_id(username):
     '''
