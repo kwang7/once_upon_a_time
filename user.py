@@ -33,9 +33,9 @@ def get_user_id(username):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = 'SELECT id FROM users WHERE username= ?'
-    result = c.execute(query, (username,))
+    result = c.execute(query, (username,)).fetchone()
     if result:
-        return result.fetchone()
+        return result[0]
     else:
         return -1
 
@@ -47,9 +47,9 @@ def get_stories(user_id):
     c = db.cursor()
     query = "SELECT DISTINCT stories.id, title FROM stories, edits \
             WHERE edits.story_id = stories.id AND edits.user_id = ?"
-    stories = c.execute(query, (user_id,))
-    return stories.fetch()
+    stories = c.execute(query, (str(user_id),)).fetchall()
     db.close()
+    return stories
 
 def edited(story_id, user_id):
     '''
@@ -58,11 +58,8 @@ def edited(story_id, user_id):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = "SELECT story_id FROM edits WHERE user_id = ? AND story_id = ?"
-    result = c.execute(query, (user_id, story_id))
-    if result:
-        return True
-    else:
-        return False
+    result = c.execute(query, (str(user_id), str(story_id))).fetchone()
+    return not (result is None)
 
 def all_unedited(user_id):
     '''
@@ -72,11 +69,11 @@ def all_unedited(user_id):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     number = c.execute(query).fetchone()[0]
-    unedited_ids = []
+    unedited_stories = []
     for i in range(1, number + 1):
         if not edited(i, user_id):
-            unedited_ids.append(i)
-    return unedited_ids
+            unedited_stories.append([story.get_title(i), i])
+    return unedited_stories
 
 if __name__ == "__main__":
     print all_unedited(1)

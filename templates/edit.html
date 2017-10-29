@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit {{ story_title }}
+{% endblock %}
+
+{% block content %}
+<div align="center">
+    <h2>Last update to <em>{{ story_title }}</em>:</h2>
+    <p>{{ last_update }}</p>
+    <br>
+    <form action="/edit?story={{story}}" method="POST">
+        What do you want to add?
+        <br>
+        <textarea rows="4" name="content" cols="100" autofocus></textarea>
+        <br>
+        <input type="submit">
+    </form>
+</div>
+{% endblock %}

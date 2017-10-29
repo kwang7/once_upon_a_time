@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-    {% block head %}
-    <title> {% block title %} {% endblock %} | Once Upon A Time</title>
-    {% endblock %}
+        {% block head %}
+        <title> {% block title %} {% endblock %} | Once Upon A Time</title>
+        {% endblock %}
     </head>
 
     <body>
-        <ul>
-            {% set messages = get_flashed_messages() %}
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+        <div align="center">
+            <ul style="list-style-type:none">
+                {% set messages = get_flashed_messages() %}
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
         {% block content %}
         {% endblock %}
 
-        {% if logged_in %}
-        <a href="/logout">Logout</a>
-        {% endif %}
+        <div align="center">
+            {% if logged_in %}
+            <a href="/logout">Logout</a>
+            {% endif %}
+        </div>
     </body>
 </html>

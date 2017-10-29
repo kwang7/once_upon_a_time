@@ -93,11 +93,13 @@ def logout():
 @app.route('/welcome', methods = ["GET", "POST"])
 def welcome():
     if "username" in session:
-        return render_template("home.html", username = session["username"], story_titles=story.titles())
+        username = session["username"]
+        return render_template("home.html", username = session["username"], \
+                stories=user.get_stories(user.get_user_id(username)))
     return redirect(url_for("auth"))
 
 @app.route('/view', methods=['GET', 'POST'])
-def view(story_id):
+def view():
     if "username" not in session:
         flash('You must be logged in to view stories!')
         return redirect(url_for('login'))
@@ -134,44 +136,36 @@ def stories():
     if "username" not in session:
         flash('You must be logged in to view stories!')
         return redirect(url_for('login'))
-    return "There's a list of unedited stories somewhere..."
+    username = session["username"]
+    return render_template('stories.html', stories=user.all_unedited(user.get_user_id(username)))
 
 @app.route('/edit', methods=['GET','POST'])
 def edit():
     if "username" not in session:
         flash('You must be logged in to edit!')
         return redirect(url_for('login'))
-    # TODO - Incomplete
+    story_id = request.args['story']
+    user_id = user.get_user_id(session['username'])
+    if user.edited(story_id, user_id):
+        flash("You've already edited this story!")
+        return redirect(url_for('welcome'))
     if request.method == "POST":
+        print "*****"
+        print story_id
+        print "*****"
         try:
-            story_id = request.args['story_id']
             content = request.form['content']
         except KeyError:
             flash('You have not filled out all the required fields')
-            return redirect(url_for('edit'))
-        # Logic for retrieving what story they are contributing to?
-        # stories = user.get_stories(
-        # storycode.add_edit(
+            return redirect(url_for('edit'), story=story_id)
+        story.add_edit(story_id, user_id, content)
+        flash("Edited story")
+        return redirect(url_for('welcome'))
     else:
-        story_id = request.args['story_id']
-        return render_template('edit.html', story_id=story_id)
-
-@app.route('/story_content', methods=['GET', 'POST'])
-def story_content():
-    story_id = request.args.get('id', '')
-    if "username" not in session:
-        flash('You must be logged in to edit!')
-        return redirect(url_for('login'))
-    else: 
-        db = sqlite3.connect(DATABASE)
-        c = db.cursor()
-        check = "SELECT * FROM edits, WHERE story_id='" + story_id + "' AND user_id = "+ user.get_user_id(session['username'])
-        print check
-        exists = c.execute(check).fetchall() #checking to see if this story exists already...     
-        if exists != []:
-            return redirect(url_for('view'), story_id = story_id)
-        else:
-            return redirect(url_for('edit'), story_id = story_id)
+        return render_template('edit.html',
+                story_title=story.get_title(story_id),
+                last_update=story.latest_story_edit(story_id),
+                story=story_id)
 
 # Passes this variable into every view
 @app.context_processor

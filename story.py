@@ -15,7 +15,7 @@ def add_story(title):
     exists = c.execute(check,(title,)).fetchall() #checking to see if this story exists already...
     if exists == []:
         query = "INSERT INTO stories VALUES (NULL,?)"
-        c.execute(query,(title))
+        c.execute(query,(title,))
         added = True
     db.commit()
     db.close()
@@ -35,7 +35,7 @@ def add_edit(story_id, user_id, content):
     c = db.cursor()
     formatted_time = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
     cmd = "INSERT INTO edits VALUES (?,?,?,?)"
-    c.execute(cmd, (story_id, user_id, formatted_time, content))
+    c.execute(cmd, (str(story_id), str(user_id), formatted_time, content))
     db.commit()
     db.close()
 
@@ -43,7 +43,7 @@ def get_story(story_id):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = "SELECT * FROM edits WHERE story_id = ? ORDER BY timestamp ASC"
-    story = c.execute(query, (story_id))
+    story = c.execute(query, (str(story_id),))
     db.close()
     if story:
         return story
@@ -74,8 +74,10 @@ def latest_story_edit(story_id):
     c = db.cursor()
     query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits WHERE story_id = ? )"
     result = c.execute(query, (story_id,))
-    return result.fetchone()[0]
-
+    try:
+        return result.fetchone()[0]
+    except TypeError:
+        return ""
 
 def titles():
     '''
@@ -90,11 +92,25 @@ def titles():
         titles.append(t)
     return titles
 
+def get_title(story_id):
+    '''
+    Given story's id, returns story's title
+    '''
+    db = sqlite3.connect(DATABASE)
+    c = db.cursor()
+    query = "SELECT title FROM stories WHERE id = ?"
+    title = c.execute(query,(story_id,)).fetchone()[0]
+    return title
+
 #------------------------------- HARDCODED STORY TITLES
 if __name__ == "__main__":
     add_story("The Story of Once Upon A Time")
     add_story("Badum")
     add_story("8 Million Stories")
+
+    print get_title(1)
+    print get_title(2)
+
 
     '''
     print ("-----------ADDING STORIES------------------")

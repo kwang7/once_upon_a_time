@@ -7,21 +7,15 @@ Welcome!
 {% block content %}
 <center>
     <font face = "Comic Sans MS" size ="200" color="purple"></font>
-    Wutz poppin, {{username}} ?
+    <h1>Wutz poppin, {{username}}? </h1>
     <br>
-    <h1> STORIES </h1>
+    <h2> Stories You've Contributed To </h2>
     <hr>
-
-    {% for item in story_titles %}
-
-    {{item[0]}} 
+    {% for story in stories %}
+    <h3>{{story[1]}}</h3>
     <br>
-
-    <a href="/story_content?id={{item[1]}}"> view or edit </a>
-
-    </form>
+    <a href="/view?story={{story[0]}}">Read this story!</a>
     <hr>
-
     {% endfor %}
 </center>
 {% endblock %}
