@@ -62,7 +62,7 @@ def auth():
         return redirect(url_for("index"))
 
 @app.route('/welcome', methods = ["GET", "POST"])
-def welcome(story_id):
+def welcome():
     if "username" in session:
         return render_template("home.html", username = session["username"], story_titles=story.titles())
     return redirect(url_for("auth"))
@@ -108,7 +108,7 @@ def stories():
     return "There's a list of unedited stories somewhere..."
 
 @app.route('/edit', methods=['GET','POST'])
-def edit():
+def edit(story_id):
     if "username" not in session:
         flash('You must be logged in to edit!')
         return redirect(url_for('login'))
