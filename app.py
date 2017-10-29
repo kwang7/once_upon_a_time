@@ -2,28 +2,26 @@ from flask import Flask, render_template, request, session, redirect, url_for, f
 import sqlite3
 import story
 import user
+import db_builder
 import os
 
 DATABASE = "once_upon_a_time.db"
+db_builder.create_tables()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
-f = "once_upon_a_time.db"
-db = sqlite3.connect(f, check_same_thread=False)
-c = db.cursor()
-
 #------------------------------- HARDCODED STORY TITLES -------------------------------
-story.new_story("The Story of Once Upon A Time")                                                                                       
-story.new_story("Badum")                                                                                                              
-story.new_story("8 Million Stories")  
-#----------------------------------------------------------------------------------------
+story.new_story("The Story of Once Upon A Time")
+story.new_story("Badum")
+story.new_story("8 Million Stories")
+#--------------------------------------------------------------------------------------
 
 @app.route("/", methods=['GET','POST'])
 def index():
     #if username is in session, redirect to homepage if "username" in session:
     if "username" in session:
-        return redirect(url_for("auth"))
+        return redirect(url_for("welcome"))
     #login or sign up options
     return render_template("howdy.html")
 
@@ -32,59 +30,66 @@ def signup():
     if "username" not in session:
         return render_template("signup.html")
     else:
-        return redirect(url_for("auth"))
+        flash("Already logged in!")
+        return redirect(url_for("welcome"))
 
 @app.route('/signauth', methods = ["GET", "POST"])
 def signauth():
     try:
-        q = "SELECT username FROM users WHERE username = " + '"' + request.form["username"] + '"'
-        foo = c.execute(q)
-        #if it's possible to fetch the username, it already exists
-        passes = foo.fetchone()[0]
-        print passes
-        flash("Username already exists")
+        username = request.form['username']
+        password = request.form['password']
+        password2 = request.form['password2']
+    except KeyError:
+        flash("Please fill out all fields")
         return render_template("signup.html")
-    except:
-        try:
-            if request.form["password"] != request.form["password2"]:
-                flash("Passwords don't match")
-                return render_template("signup.html")
-            else:
-                c.execute("INSERT INTO users VALUES (?,?)", (request.form["username"], request.form["password"]))
-                session["username"] = request.form["username"]
-        except:
-            return redirect(url_for("auth"))
-    
+    if password != password2:
+        flash("Passwords don't match")
+        return render_template("signup.html")
+    if user.add_user(username, password):
+        flash("Successfully created!")
+        return redirect(url_for('login'))
+    else:
+        flash("Username taken")
+        return redirect(url_for('signup'))
+
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     if "username" in session:
-        return redirect(url_for("auth"))
-    return render_template("login.html")
+        flash("Already logged in!")
+        return redirect(url_for("welcome"))
+    return render_template('login.html')
 
 @app.route('/auth', methods = ["GET", "POST"])
 def auth():
     #user already logged in
     if "username" in session:
         return redirect(url_for("welcome"))
-    try:
-        #find corresponding password for username
-        q = "SELECT password FROM users WHERE username = " + '"' + request.form["username"] + '"'# + "AND password =" + '"'+ request.form["password"] + '"'
-        foo = c.execute(q)
-        try:
-            passes = foo.fetchone()[0]
-            print passes
-            if passes == request.form['password']:
-                session["username"] = request.form["username"]
-                return redirect(url_for("welcome"))
-            else:
-                flash("Wrong password")
-                return render_template("login.html")
-        except:#no password exists for the username entered, that user does not exist
-            flash("Wrong username")
-            return render_template("login.html")
-    except:
+    if request.method == "GET":
         #user went to /auth without logging in 
         return redirect("/")
+    try:
+        username = request.form['username']
+        password = request.form['password']
+    except KeyError:
+        flash("Please fill out all fields")
+        return render_template("login.html")
+    if user.auth_user(username, password):
+        session['username'] = username
+        flash("Successfully logged in")
+        return redirect(url_for('welcome'))
+    else:
+        flash("Failed login")
+        return redirect(url_for('login'))
+
+@app.route('/logout')
+def logout():
+    if "username" not in session:
+        flash("You aren't logged in")
+        return redirect(url_for('login'))
+    session.pop("username")
+    flash("You've been logged out")
+    return redirect(url_for('index'))
+
 @app.route('/welcome', methods = ["GET", "POST"])
 def welcome():
     if "username" in session:
@@ -132,14 +137,14 @@ def stories():
     return "There's a list of unedited stories somewhere..."
 
 @app.route('/edit', methods=['GET','POST'])
-def edit(story_id):
+def edit():
     if "username" not in session:
         flash('You must be logged in to edit!')
         return redirect(url_for('login'))
     # TODO - Incomplete
     if request.method == "POST":
         try:
-            story_id = request.form['story_id']
+            story_id = request.args['story_id']
             content = request.form['content']
         except KeyError:
             flash('You have not filled out all the required fields')
@@ -148,8 +153,8 @@ def edit(story_id):
         # stories = user.get_stories(
         # storycode.add_edit(
     else:
-        return redirect(url_for('index'))
-
+        story_id = request.args['story_id']
+        return render_template('edit.html', story_id=story_id)
 
 @app.route('/story_content', methods=['GET', 'POST'])
 def story_content():
@@ -168,10 +173,13 @@ def story_content():
         else:
             return redirect(url_for('edit'), story_id = story_id)
 
+# Passes this variable into every view
+@app.context_processor
+def logged_in():
+    if "username" in session:
+        return dict(logged_in=True)
+    return dict(logged_in=False)
 
 if __name__ == "__main__":
     app.debug = True
     app.run()
-
-db.commit()
-db.close()

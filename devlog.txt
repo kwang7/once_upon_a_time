@@ -66,3 +66,7 @@ Finish story_content(): redirects to edit() if user has not edited yet, redirect
 
 yeH -- 2017-10-29 11:08:00
 Fix templates
+
+yeH -- 2017-10-29 12:55:00
+Render flashes in base.html
+Optimize login system

@@ -115,11 +115,10 @@ def titles():
     return titles
 
 #------------------------------- HARDCODED STORY TITLES
-new_story("The Story of Once Upon A Time")
-new_story("Badum")
-new_story("8 Million Stories")
-
 if __name__ == "__main__":
+    new_story("The Story of Once Upon A Time")
+    new_story("Badum")
+    new_story("8 Million Stories")
 
     '''
     print ("-----------ADDING STORIES------------------")

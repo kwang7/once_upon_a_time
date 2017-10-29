@@ -4,6 +4,28 @@ import db_builder
 
 DATABASE = db_builder.DATABASE
 
+def add_user(username, password):
+    db = sqlite3.connect(DATABASE)
+    c = db.cursor()
+    query = 'SELECT id FROM users WHERE username= ?'
+    existing_user = c.execute(query, (username,))
+    added = False
+    if not existing_user.fetchone():
+        c.execute("INSERT INTO users VALUES (?,?,NULL)", (username,password))
+        added = True
+    db.commit()
+    db.close()
+    return added
+
+def auth_user(username, password):
+    db = sqlite3.connect(DATABASE)
+    c = db.cursor()
+    query = 'SELECT password FROM users WHERE username = ? AND password = ?'
+    user = c.execute(query,(username,password))
+    if user:
+        return True
+    return False
+
 def get_user_id(username):
     '''
     Gets user id from use with username = username
@@ -28,7 +50,6 @@ def get_stories(user_id):
     stories = c.execute(query)
     return stories.fetch()
     db.close()
-
 
 def edited(story_id, user_id):
     '''
