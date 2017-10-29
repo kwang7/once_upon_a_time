@@ -36,14 +36,25 @@ def signup():
 
 @app.route('/signauth', methods = ["GET", "POST"])
 def signauth():
-    #print request.form
-    if request.form["password"] != request.form["password2"]:
-        flash("Passwords don't match")
+    try:
+        q = "SELECT username FROM users WHERE username = " + '"' + request.form["username"] + '"'
+        foo = c.execute(q)
+        #if it's possible to fetch the username, it already exists
+        passes = foo.fetchone()[0]
+        print passes
+        flash("Username already exists")
         return render_template("signup.html")
-    c.execute("INSERT INTO users VALUES (?,?)", (request.form["username"], request.form["password"]))
-    session["username"] = request.form["username"]
-    return redirect(url_for("auth"))
-
+    except:
+        try:
+            if request.form["password"] != request.form["password2"]:
+                flash("Passwords don't match")
+                return render_template("signup.html")
+            else:
+                c.execute("INSERT INTO users VALUES (?,?)", (request.form["username"], request.form["password"]))
+                session["username"] = request.form["username"]
+        except:
+            return redirect(url_for("auth"))
+    
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     if "username" in session:
@@ -52,17 +63,28 @@ def login():
 
 @app.route('/auth', methods = ["GET", "POST"])
 def auth():
+    #user already logged in
     if "username" in session:
         return redirect(url_for("welcome"))
-    else:
-
-        # q = "SELECT password FROM userInfo WHERE username = \"" + session["username"] + "\" AND password = \"" + session["password"]
-        # #WHERE username = " + session["username"]
-        # foo = c.execute(q)
-        # print(foo)
-        flash("not authenticated")
-        return redirect(url_for("index"))
-
+    try:
+        #find corresponding password for username
+        q = "SELECT password FROM users WHERE username = " + '"' + request.form["username"] + '"'# + "AND password =" + '"'+ request.form["password"] + '"'
+        foo = c.execute(q)
+        try:
+            passes = foo.fetchone()[0]
+            print passes
+            if passes == request.form['password']:
+                session["username"] = request.form["username"]
+                return redirect(url_for("welcome"))
+            else:
+                flash("Wrong password")
+                return render_template("login.html")
+        except:#no password exists for the username entered, that user does not exist
+            flash("Wrong username")
+            return render_template("login.html")
+    except:
+        #user went to /auth without logging in 
+        return redirect("/")
 @app.route('/welcome', methods = ["GET", "POST"])
 def welcome():
     if "username" in session:

@@ -9,7 +9,12 @@
 {% block content %}
 <body> <center>
     <font face = "Comic Sans MS" size ='200' color='cyan' 
-	</font>
+	  </font>
+{% with messages = get_flashed_messages() %}
+	  {% for message in messages %}
+	  {{ message }}
+	  {% endfor %}
+	  {% endwith %}
     <form action="/auth" method="POST">
       Username:
       <input type="text" name='username'>
