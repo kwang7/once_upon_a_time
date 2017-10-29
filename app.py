@@ -110,7 +110,10 @@ def view():
     # TODO - INCOMPLETE
     story_id = request.args['story']
     story.get_story(story_id)
-    return "This is a deep story."
+    content = story.get_story_content(story_id)
+    print(content)
+    return render_template('storypage.html',
+                            content=story.get_story_content(story_id))
 
 # TODO - TEST ONCE LOGIN SYSTEM IS UP & RUNNING
 @app.route('/create', methods=['GET', 'POST'])
@@ -159,10 +162,11 @@ def edit():
         print ("*****")
         try:
             content = request.form['content']
+            story.add_edit(story_id, user_id, content)
         except KeyError:
             flash('You have not filled out all the required fields')
             return redirect(url_for('edit'), story=story_id)
-        story.add_edit(story_id, user_id, content)
+
         flash("Edited story")
         return redirect(url_for('welcome'))
     else:

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+View {{ story_title }}
+{% endblock %}
+
+{% block content %}
+<div align="center">
+    <h2><em>{{ story_title }}</em></h2>
+    <p>{{ content }}</p>
+</div>
+{% endblock %}

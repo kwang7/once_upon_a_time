@@ -79,6 +79,21 @@ def latest_story_edit(story_id):
     except TypeError:
         return ""
 
+def get_story_content(story_id):
+    '''
+    Returns content of an entire specified story
+    '''
+    db = sqlite3.connect(DATABASE)
+    c = db.cursor()
+    query = "SELECT content FROM edits WHERE story_id = ?"
+    result = c.execute(query, (story_id,))
+    content = ""
+
+    for foo in result:
+        content += foo[0]
+
+    return content
+
 def titles():
     '''
     Returns story titles
