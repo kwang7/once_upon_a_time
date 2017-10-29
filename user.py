@@ -51,16 +51,12 @@ def all_unedited(user_id):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     number = c.execute(query).fetchone()[0]
-    print(number)
     unedited_ids = []
     for i in range(1, number + 1):
         if not edited(i, user_id):
             unedited_ids.append(i)
     return unedited_ids
 
-
-
-print(all_unedited(1))
-
-
-print(edited(1, 3))
+if __name__ == "__main__":
+    print all_unedited(1)
+    print edited(1, 3)
