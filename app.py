@@ -98,7 +98,8 @@ def welcome():
     if "username" in session:
         username = session["username"]
         return render_template("home.html", username = session["username"], \
-                stories=user.get_stories(user.get_user_id(username)))
+                stories=user.get_stories(user.get_user_id(username)), \
+                unedited_stories=user.all_unedited(user.get_user_id(username)))
     return redirect(url_for("auth"))
 
 @app.route('/view', methods=['GET', 'POST'])
