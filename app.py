@@ -115,7 +115,6 @@ def view():
         content = story.latest_story_edit(story_id)
     return render_template('storypage.html', story_title=story.get_title(story_id), content=content)
 
-# TODO - TEST ONCE LOGIN SYSTEM IS UP & RUNNING
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     if "username" not in session:
@@ -137,7 +136,6 @@ def create():
         added = c.execute("SELECT MAX(id) FROM stories")
         story_id = added.fetchone()[0]
 
-        # What if the user_id returns -1
         user_id = user.get_user_id(username)
         story.add_edit(story_id, user_id, content)
         flash("Story successfully created")

@@ -20,13 +20,11 @@ def add_user(username, password):
 def auth_user(username, password):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    query = 'SELECT password FROM users WHERE username = ' + '"' + username + '"' + " AND password = " + "'" + password + "'"
-    user = c.execute(query)
-    try:
-        user.fetchone()[0]
+    query = 'SELECT password FROM users WHERE username = ? AND password = ?'
+    user = c.execute(query,(username,password)).fetchone()
+    if user:
         return True
-    except TypeError:
-        return False
+    return False
 
 def get_user_id(username):
     '''
