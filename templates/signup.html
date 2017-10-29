@@ -7,12 +7,7 @@ Sign Up
 {% block content %}
 <center>
     <!-- <font face = "Comic Sans MS" size ='200' color='green' 	</font> -->
-    {% with messages = get_flashed_messages() %}
-    {% for message in messages %}
-    {{ message }}
-    {% endfor %}
-    {% endwith %}
-    <form action= "signauth" method="POST">
+    <form action="/signauth" method="POST">
         Pick a Username:
         <input type="text" name='username'>
         <br>

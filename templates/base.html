@@ -7,6 +7,12 @@
     </head>
 
     <body>
+        <ul>
+            {% set messages = get_flashed_messages() %}
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
         {% block content %}
         {% endblock %}
     </body>
