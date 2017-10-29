@@ -76,5 +76,5 @@ def all_unedited(user_id):
     return unedited_stories
 
 if __name__ == "__main__":
-    print all_unedited(1)
-    print edited(1, 3)
+    print (all_unedited(1))
+    print (edited(1, 3))

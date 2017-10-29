@@ -45,6 +45,9 @@ def signauth():
     if password != password2:
         flash("Passwords don't match")
         return render_template("signup.html")
+    if username == "" or password == "" or password2 == "":
+        flash("Fields must not be blank")
+        return render_template("signup.html")
     if user.add_user(username, password):
         flash("Successfully created!")
         return redirect(url_for('login'))
@@ -65,7 +68,7 @@ def auth():
     if "username" in session:
         return redirect(url_for("welcome"))
     if request.method == "GET":
-        #user went to /auth without logging in 
+        #user went to /auth without logging in
         return redirect("/")
     try:
         username = request.form['username']
@@ -150,9 +153,9 @@ def edit():
         flash("You've already edited this story!")
         return redirect(url_for('welcome'))
     if request.method == "POST":
-        print "*****"
-        print story_id
-        print "*****"
+        print ("*****")
+        print (story_id)
+        print ("*****")
         try:
             content = request.form['content']
         except KeyError:

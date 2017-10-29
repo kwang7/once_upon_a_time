@@ -108,13 +108,13 @@ if __name__ == "__main__":
     add_story("Badum")
     add_story("8 Million Stories")
 
-    print get_title(1)
-    print get_title(2)
+    print (get_title(1))
+    print (get_title(2))
 
 
     '''
     print ("-----------ADDING STORIES------------------")
-    add_story("The Story of Once Upon A Time") 
+    add_story("The Story of Once Upon A Time")
     add_story("Badum")
     add_story("8 Million Stories")
     see_table("stories")
