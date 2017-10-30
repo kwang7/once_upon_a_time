@@ -7,12 +7,17 @@ View {{ story_title }}
 {% block content %}
 <div align="center">
     <h2><em>{{ story_title }}</em></h2>
+    {% if edited %}
+    {% for edit in content %}
+    <p>{{ edit[0] }}</p>
+    {% endfor %}
+    {% else %}
     <p>{{ content }}</p>
+    {% endif %}
     <br>
-    <form action="/welcome">
+    {% set action = "/welcome" if edited else "/stories" %}
+    <form action={{ action }}>
     <button type="submit">Back</button>
-    <br>
-    <br>
     </form>
 </div>
 {% endblock %}

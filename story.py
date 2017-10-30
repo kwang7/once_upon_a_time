@@ -42,12 +42,11 @@ def add_edit(story_id, user_id, content):
 def get_story(story_id):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
-    query = "SELECT * FROM edits WHERE story_id = ? ORDER BY timestamp ASC"
+    query = "SELECT content FROM edits WHERE story_id = ? ORDER BY timestamp ASC"
     story = c.execute(query, (str(story_id),))
+    story = story.fetchall()
     db.close()
-    if story:
-        return story
-    return []
+    return story
 
 # add_story(1,"Title")
 # add_edit(1,1,datetime.datetime.today(),"Edit 1")
@@ -78,22 +77,6 @@ def latest_story_edit(story_id):
         return result.fetchone()[0]
     except TypeError:
         return ""
-
-def get_story_content(story_id):
-    '''
-    Returns content of an entire specified story
-    '''
-    db = sqlite3.connect(DATABASE)
-    c = db.cursor()
-    query = "SELECT content FROM edits WHERE story_id = ?"
-    result = c.execute(query, (story_id,))
-    content = ""
-
-    for foo in result:
-        content += " " + foo[0]
-
-    return content
-
 def titles():
     '''
     Returns story titles

@@ -109,11 +109,12 @@ def view():
     story_id = request.args['story']
     story.get_story(story_id)
     #print story_id
-    if user.edited(story_id, user.get_user_id(session['username'])):
-        content = story.get_story_content(story_id)
+    edited = user.edited(story_id, user.get_user_id(session['username']))
+    if edited:
+        content = story.get_story(story_id)
     else:
         content = story.latest_story_edit(story_id)
-    return render_template('storypage.html', story_title=story.get_title(story_id), content=content)
+    return render_template('storypage.html', story_title=story.get_title(story_id), content=content, edited=edited)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
