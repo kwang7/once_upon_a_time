@@ -33,7 +33,7 @@ To deactivate your virtual environment:
 A database has been provided with the following users:
 
 | Username    | Password       |
-|-------------|----------------|
+| ----------- | -------------- |
 | test_user   | test_pass      |
 | cool_person | cool_pass      |
 | mr_brown    | brown mykolyk  |
