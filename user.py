@@ -1,8 +1,9 @@
+import db_builder
 import story
 import sqlite3
-import db_builder
+import hashlib
 
-DATABASE = db_builder.DATABASE
+DATABASE = "once_upon_a_time.db"
 
 def add_user(username, password):
     db = sqlite3.connect(DATABASE)
@@ -11,7 +12,8 @@ def add_user(username, password):
     existing_user = c.execute(query, (username,))
     added = False
     if not existing_user.fetchone():
-        c.execute("INSERT INTO users VALUES (?,?,NULL)", (username,password))
+        c.execute("INSERT INTO users VALUES (?,?,NULL)", \
+                (username,hashlib.sha256(password).hexdigest()))
         added = True
     db.commit()
     db.close()
@@ -21,7 +23,7 @@ def auth_user(username, password):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = 'SELECT password FROM users WHERE username = ? AND password = ?'
-    user = c.execute(query,(username,password)).fetchone()
+    user = c.execute(query,(username,hashlib.sha256(password).hexdigest())).fetchone()
     if user:
         return True
     return False
