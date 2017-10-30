@@ -106,7 +106,7 @@ def view():
         content = story.get_story(story_id)
     else:
         content = story.latest_story_edit(story_id)
-    return render_template('storypage.html', story_title=story.get_title(story_id), content=content, edited=edited)
+    return render_template('storypage.html', story_title=story.get_title(story_id), content=content, edited=edited, story=story_id)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():

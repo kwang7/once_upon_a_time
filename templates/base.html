@@ -7,7 +7,6 @@
     </head>
     <font face = "Verdana" color='orange'>
     <body>
-      
       <div align="center">
         <ul style="list-style-type:none">
           {% set messages = get_flashed_messages() %}
@@ -19,6 +18,7 @@
       {% block content %}
       {% endblock %}
       <div align="center">
+        <br>
         {% if logged_in %}
         <a href="/logout">Logout</a>
         {% endif %}

@@ -13,6 +13,8 @@ View {{ story_title }}
     {% endfor %}
     {% else %}
     <p>{{ content }}</p>
+    <a href="/edit?story={{ story }}">Edit this story?</a>
+    <br>
     {% endif %}
     <br>
     {% set action = "/welcome" if edited else "/stories" %}
