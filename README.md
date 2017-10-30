@@ -1,5 +1,13 @@
 # Project 0: Da Art of Storytellin' by Team once upon a time
 
+Team once upon a time
+
+Karina Ionkina, Vivien Lee, Kelly Wang, Helen Ye
+
+SoftDev1 pd7
+
+P#00 - Da Art of Storytellin'
+
 ## Instructions to Run
 
 This project runs on Python 2.7.
