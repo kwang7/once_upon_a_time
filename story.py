@@ -6,13 +6,14 @@ DATABASE = "once_upon_a_time.db"
 
 def add_story(title):
     '''
-    add story to the table
+    Adds story to the stories table in the database
     '''
     added = False
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     check = "SELECT * FROM stories WHERE title= ?"
     exists = c.execute(check,(title,)).fetchall() #checking to see if this story exists already...
+    # fetchall() returns an empty list if teh story doesn't exist
     if exists == []:
         query = "INSERT INTO stories VALUES (NULL,?)"
         c.execute(query,(title,))
@@ -20,10 +21,13 @@ def add_story(title):
         added = True
     db.commit()
     db.close()
+    # If the story was added, return the new story's id otherwise False
+    # Kind of bad programming
     if added:
         return num
-    return -1
+    return False
 
+# Quick testing code to see the values in a table
 def see_table(table):
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
@@ -34,8 +38,14 @@ def see_table(table):
     db.close()
 
 def add_edit(story_id, user_id, content):
+    '''
+    Add an edit to a story given a story and user id, and the edit contents
+    '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
+    # Using the datetime module, convert the given time to the format:
+    # YYYY-mm-dd HH:MM:SS
+    # e.g. 1970-01-01 00:00:00
     formatted_time = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
     cmd = "INSERT INTO edits VALUES (?,?,?,?)"
     c.execute(cmd, (str(story_id), str(user_id), formatted_time, content))
@@ -43,6 +53,9 @@ def add_edit(story_id, user_id, content):
     db.close()
 
 def get_story(story_id):
+    '''
+    Given a story, return all of its edits
+    '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = "SELECT content FROM edits WHERE story_id = ? ORDER BY timestamp ASC"
@@ -50,22 +63,6 @@ def get_story(story_id):
     story = story.fetchall()
     db.close()
     return story
-
-# add_story(1,"Title")
-# add_edit(1,1,datetime.datetime.today(),"Edit 1")
-# add_edit(1,2,datetime.datetime.today(),"Edit 2")
-# add_edit(1,3,datetime.datetime.today(),"Edit 3")
-# for row in get_story(1):
-#     print row
-
-def get_last_edit():
-    '''
-    Last update in the table
-    '''
-    db = sqlite3.connect(DATABASE)
-    c = db.cursor()
-    query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits)"
-    result = c.execute(query)
     return result.fetchone()[0]
 
 def latest_story_edit(story_id):
@@ -78,18 +75,6 @@ def latest_story_edit(story_id):
     except:
         return ""
 
-def titles():
-    '''
-    Returns story titles
-    '''
-    db = sqlite3.connect(DATABASE)
-    c = db.cursor()
-    query = "SELECT title, id FROM stories"
-    result = c.execute(query).fetchall()
-    titles = []
-    for t in result:
-        titles.append(t)
-    return titles
 
 def get_title(story_id):
     '''
@@ -128,9 +113,6 @@ if __name__ == "__main__":
     add_edit(1,3, "Edit 3")
 
     get_story(1)
-    print("-----------PRINTING LATEST EDIT ---------------")
-    get_last_edit()
-
     print("-----------PRINTING LATEST EDIT OF STORY_ID = 1 ---------------")
     print latest_story_edit(1)
 

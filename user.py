@@ -6,6 +6,10 @@ import hashlib
 DATABASE = "once_upon_a_time.db"
 
 def add_user(username, password):
+    '''
+    Takes a username and password and adds it as a user
+    Hashes the password using sha-256
+    '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = 'SELECT id FROM users WHERE username= ?'
@@ -20,6 +24,9 @@ def add_user(username, password):
     return added
 
 def auth_user(username, password):
+    '''
+    Checks if there is a user with the username and password specified
+    '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
     query = 'SELECT password FROM users WHERE username = ? AND password = ?'
@@ -30,7 +37,7 @@ def auth_user(username, password):
 
 def get_user_id(username):
     '''
-    Gets user id from use with username = username
+    Gets user id corresponding to the given username
     '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
@@ -43,7 +50,7 @@ def get_user_id(username):
 
 def get_stories(user_id):
     '''
-    Returns a list of stories edited by user id = user_id
+    Returns a list of stories the given user has edited
     '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
@@ -55,7 +62,7 @@ def get_stories(user_id):
 
 def edited(story_id, user_id):
     '''
-    Returns true if the user edited the story with story id = story_id
+    Returns true if the user edited the story with the given id
     '''
     db = sqlite3.connect(DATABASE)
     c = db.cursor()
@@ -65,7 +72,8 @@ def edited(story_id, user_id):
 
 def all_unedited(user_id):
     '''
-    Returns a list of all unedited story ids
+    Returns a list of all stories not yet edited by the given user
+    In the format of a list of lists, with the internal list [TITLE, ID]
     '''
     query = "SELECT Count(*) FROM stories"
     db = sqlite3.connect(DATABASE)
