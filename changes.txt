@@ -1,0 +1,13 @@
+Team Once Upon A Time
+Karina Ionkina, Vivian Lee, Kelly Wang, Helen Ye
+SoftDev1 pd07
+2017-10-30
+
+The only difference between our project and our original design is that
+upon logging in, the user lands on a page displaying stories he/she already
+contributed to instead of all unedited stories. To view the unedited stories,
+the user can click the "view unedited stories" button found on the page. 
+
+
+
+
