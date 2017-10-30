@@ -14,7 +14,7 @@ Welcome!
 <form action="/welcome" method="POST">
 <input type="submit" value="Home">
 </form>
-</duv>
+</div>
 
 <center>
     <font face = "Comic Sans MS" size ="200" color="purple"></font>

@@ -5,6 +5,13 @@ Create a story
 {% endblock %}
 
 {% block content %}
+<div align="right">
+<form action="/welcome" method="POST">
+<input type="submit" value="Home">
+</form>
+</div>
+
+
 <div align="center">
     <form action="/create" method="POST">
         Story title:
