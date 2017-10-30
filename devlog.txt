@@ -89,3 +89,9 @@ made a bunch of small fixes
 
 wangK -- 2017-10-29 18:12:00
 fixed view() for edited and unedited stories
+
+yeH -- 2017-10-29 20:24:00
+Modify viewing stories
+
+yeH -- 2017-10-29 10:15:00
+Finishing touches/bug fixes

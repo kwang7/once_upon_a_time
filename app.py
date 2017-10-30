@@ -1,21 +1,14 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 import sqlite3
+import db_builder
 import story
 import user
-import db_builder
 import os
 
-DATABASE = "once_upon_a_time.db"
 db_builder.create_tables()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
-
-#------------------------------- HARDCODED STORY TITLES -------------------------------
-story.add_story("The Story of Once Upon A Time")
-story.add_story("Badum")
-story.add_story("8 Million Stories")
-#--------------------------------------------------------------------------------------
 
 @app.route("/", methods=['GET','POST'])
 def index():
@@ -107,7 +100,6 @@ def view():
         flash('You must be logged in to view stories!')
         return redirect(url_for('login'))
     story_id = request.args['story']
-    story.get_story(story_id)
     #print story_id
     edited = user.edited(story_id, user.get_user_id(session['username']))
     if edited:
@@ -130,12 +122,7 @@ def create():
             return redirect(url_for('create'))
 
         username = session['username']
-        story.add_story(title)
-
-        db = sqlite3.connect(DATABASE)
-        c = db.cursor()
-        added = c.execute("SELECT MAX(id) FROM stories")
-        story_id = added.fetchone()[0]
+        story_id = story.add_story(title)
 
         user_id = user.get_user_id(username)
         story.add_edit(story_id, user_id, content)
@@ -162,9 +149,6 @@ def edit():
         flash("You've already edited this story!")
         return redirect(url_for('welcome'))
     if request.method == "POST":
-        print ("*****")
-        print (story_id)
-        print ("*****")
         try:
             content = request.form['content']
         except KeyError:

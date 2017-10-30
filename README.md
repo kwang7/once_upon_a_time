@@ -29,3 +29,23 @@ The site can be reached at `localhost:5000`.
 To deactivate your virtual environment:
 
 `$ deactivate`
+
+A database has been provided with the following users:
+
+| Username    | Password       |
+|-------------|----------------|
+| test_user   | test_pass      |
+| cool_person | cool_pass      |
+| mr_brown    | brown mykolyk  |
+| mr_dw       | dyrland weaver |
+
+as well as several stories.
+
+If you want to restore to the database provided, you can:
+```
+$ rm once_upon_a_time.db
+$ python
+>>> import db_builder
+>>> db_builder.create_tables()
+>>> db_builder.seed_db()
+```

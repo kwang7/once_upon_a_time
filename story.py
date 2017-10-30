@@ -1,8 +1,8 @@
-import sqlite3
 import db_builder
+import sqlite3
 import datetime #used for timestamp
 
-DATABASE = db_builder.DATABASE
+DATABASE = "once_upon_a_time.db"
 
 def add_story(title):
     '''
@@ -16,10 +16,13 @@ def add_story(title):
     if exists == []:
         query = "INSERT INTO stories VALUES (NULL,?)"
         c.execute(query,(title,))
+        num = c.lastrowid
         added = True
     db.commit()
     db.close()
-    return added
+    if added:
+        return num
+    return -1
 
 def see_table(table):
     db = sqlite3.connect(DATABASE)
@@ -69,14 +72,12 @@ def latest_story_edit(story_id):
     '''
     Returns the content of the latest update for a specific story
     '''
-    db = sqlite3.connect(DATABASE)
-    c = db.cursor()
-    query = "SELECT content FROM edits WHERE timestamp = (SELECT MAX(timestamp) FROM edits WHERE story_id = ? )"
-    result = c.execute(query, (story_id,))
     try:
-        return result.fetchone()[0]
-    except TypeError:
+        last = get_story(story_id)[-1]
+        return last[0]
+    except:
         return ""
+
 def titles():
     '''
     Returns story titles
